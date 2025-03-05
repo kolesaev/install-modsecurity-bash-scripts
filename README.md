@@ -1,4 +1,4 @@
-# ModSecurity installations scritps
+# ModSecurity installation scripts
 
 ## Description
 
