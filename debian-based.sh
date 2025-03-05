@@ -34,6 +34,7 @@ $sudo ./configure --with-compat --with-openssl=/usr/include/openssl/ --add-dynam
 $sudo make modules
 $sudo cp objs/ngx_http_modsecurity_module.so /usr/share/nginx/modules/
 echo 'load_module /usr/share/nginx/modules/ngx_http_modsecurity_module.so;' | $sudo tee /etc/nginx/modules-enabled/50-mod-http-modsecurity.conf
+$sudo sed -i "s|modsecurity on;||g; s|modsecurity_rules_file.*||g;" /etc/nginx/nginx.conf
 $sudo sed -i "/http {/a #\n        modsecurity on;\n        modsecurity_rules_file /opt/modsecurity/modsecurity.conf;" /etc/nginx/nginx.conf
 $sudo rm -rf /usr/local/src/cpg /usr/local/src/ModSecurity
 cd /opt/modsecurity
