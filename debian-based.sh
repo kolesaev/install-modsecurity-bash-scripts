@@ -45,4 +45,4 @@ $sudo git clone -b $crs_ver https://github.com/coreruleset/coreruleset.git crs
 $sudo cp $cur_dir/modsecurity.conf /opt/modsecurity/modsecurity.conf
 $sudo chown -R root:root /opt/modsecurity 
 
-nginx -t && nginx -s reload || echo "Error"
+$sudo nginx -t && $sudo nginx -s reload || echo "Error"
