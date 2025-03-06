@@ -15,10 +15,25 @@ cur_dir=$(pwd)
 
 # Install required packages
 $sudo apt-get update
-$sudo apt-get install -y git jq curl libtool autoconf build-essential libpcre3-dev zlib1g-dev libssl-dev libxml2-dev libgeoip-dev liblmdb-dev libyajl-dev libcurl4-openssl-dev libpcre++-dev pkgconf libxslt1-dev libgd-dev nginx automake
-$sudo mkdir -p /opt/modsecurity
+$sudo apt-get install -y git jq curl libtool autoconf build-essential libpcre3-dev zlib1g-dev libssl-dev libxml2-dev libgeoip-dev liblmdb-dev libyajl-dev libcurl4-openssl-dev pkgconf libxslt1-dev libgd-dev nginx automake
+
+if apt search "libpcre\+\+-dev" | grep -q libpcre\+\+-dev
+then
+
+    $sudo apt-get install -y libpcre++-dev
+
+else
+
+    curl -o /tmp/libpcre1.deb -sSL "http://launchpadlibrarian.net/564387724/libpcre++0v5_0.9.5-7_amd64.deb"
+    curl -o /tmp/libpcre2.deb -sSL "http://launchpadlibrarian.net/564387721/libpcre++-dev_0.9.5-7_amd64.deb"
+    $sudo dpkg -i /tmp/libpcre1.deb
+    $sudo dpkg -i /tmp/libpcre2.deb
+
+fi
+
 
 # Prepare ModSecurity repo
+$sudo mkdir -p /opt/modsecurity/ /usr/lib/nginx/modules/
 cd /usr/local/src
 $sudo git clone --depth 1 -b v3/master --single-branch https://github.com/SpiderLabs/ModSecurity
 cd ModSecurity
