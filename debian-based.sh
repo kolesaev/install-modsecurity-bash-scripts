@@ -62,7 +62,7 @@ $sudo cp $cur_dir/src/cpg/nginx-${nginx_ver}/objs/ngx_http_modsecurity_module.so
 # Configure ModSecurity
 cd /opt/modsecurity
 $sudo cp $cur_dir/src/ModSecurity/unicode.mapping ./
-$sudo rm -rf $cur_dir/src/cpg $cur_dir/src
+$sudo rm -rf $cur_dir/src
 crs_ver=$(curl -sSL https://api.github.com/repos/coreruleset/coreruleset/releases/latest | jq -r .tag_name)
 $sudo rm -rf crs
 $sudo git clone -b $crs_ver https://github.com/coreruleset/coreruleset.git crs
