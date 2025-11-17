@@ -19,8 +19,8 @@ mkdir -p $cur_dir/modsec-build/
 mkdir -p $cur_dir/src
 # Prepare ModSecurity repo
 cd $cur_dir/src
-$sudo git clone --depth 1 -b v3/encodejsaudit --single-branch https://github.com/airween/ModSecurity.git
-cd ModSecurity
+$sudo git clone --depth 1 -b v3/master --single-branch https://github.com/owasp-modsecurity/ModSecurity
+cd $cur_dir/src/ModSecurity
 $sudo git submodule init
 $sudo git submodule update
 $sudo bash build.sh
@@ -36,7 +36,8 @@ nginx_ver=$(nginx -v 2>&1 | awk '{print $3}' | awk -F / '{print $2}')
 $sudo curl -sSLO "http://nginx.org/download/nginx-${nginx_ver}.tar.gz"
 $sudo tar -xvzf nginx-${nginx_ver}.tar.gz
 $sudo git clone https://github.com/SpiderLabs/ModSecurity-nginx $cur_dir/src/cpg/ModSecurity-nginx
-cd nginx-${nginx_ver}
+cd $cur_dir/src/cpg/nginx-${nginx_ver}
 $sudo sh configure --with-compat --with-openssl=/usr/include/openssl/ --add-dynamic-module=$cur_dir/src/cpg/ModSecurity-nginx
 $sudo make modules
 $sudo cp $cur_dir/src/cpg/nginx-${nginx_ver}/objs/ngx_http_modsecurity_module.so $cur_dir/modsec-build/
+$sudo rm -rf $cur_dir/src
