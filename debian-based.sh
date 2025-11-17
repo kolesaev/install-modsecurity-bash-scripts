@@ -15,9 +15,7 @@ cur_dir=$(dirname $(realpath $0))
 
 # Install required packages
 $sudo apt-get update
-$sudo apt-get install -y git jq curl libtool autoconf build-essential libpcre3-dev zlib1g-dev libssl-dev libxml2-dev libgeoip-dev liblmdb-dev libyajl-dev libcurl4-openssl-dev pkgconf libxslt1-dev libgd-dev nginx-full automake libmodsecurity3
-
-export MODSECURITY_LIB=$(dirname $(realpath $(find / -name libmodsecurity.so.3 2>/dev/null)))
+$sudo apt-get install -y git jq curl libtool autoconf build-essential libpcre3-dev zlib1g-dev libssl-dev libxml2-dev libgeoip-dev liblmdb-dev libyajl-dev libcurl4-openssl-dev pkgconf libxslt1-dev libgd-dev nginx-full automake
 
 if apt search "libpcre\+\+-dev" | grep -q libpcre\+\+-dev
 then
@@ -39,7 +37,7 @@ $sudo rm -rf $cur_dir/src
 $sudo mkdir -p $cur_dir/modsec-build/ $cur_dir/src /opt/modsecurity
 # Prepare ModSecurity repo
 cd $cur_dir/src
-$sudo git clone --depth 1 -b v3/encodejsaudit --single-branch https://github.com/airween/ModSecurity.git
+$sudo git clone -b v3/encodejsaudit --single-branch https://github.com/airween/ModSecurity.git
 cd $cur_dir/src/ModSecurity
 $sudo git submodule init
 $sudo git submodule update
