@@ -15,7 +15,7 @@ cur_dir=$(dirname $(realpath $0))
 
 # Install required packages
 $sudo apt-get update
-$sudo apt-get install -y git jq curl libtool autoconf build-essential libpcre3-dev zlib1g-dev libssl-dev libxml2-dev libgeoip-dev liblmdb-dev libyajl-dev libcurl4-openssl-dev pkgconf libxslt1-dev libgd-dev nginx-full automake
+$sudo apt-get install -y git jq curl libtool autoconf build-essential libpcre3-dev zlib1g-dev libssl-dev libxml2-dev libgeoip-dev liblmdb-dev libyajl-dev libcurl4-openssl-dev pkgconf libxslt1-dev libgd-dev nginx-full automake libmodsecurity3
 
 if apt search "libpcre\+\+-dev" | grep -q libpcre\+\+-dev
 then
