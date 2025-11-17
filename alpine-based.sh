@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# Sourced from https://www.webhi.com/how-to/how-to-install-modsecurity-in-nginx-on-ubuntu-18-04-20-4-22-04-debian/
-
 if whoami | grep -qv root
 then
 
@@ -14,10 +12,10 @@ fi
 cur_dir=$(dirname $(realpath $0))
 
 # Install required packages
-apk add --no-cache git jq curl libtool autoconf build-base pcre-dev zlib-dev openssl-dev libxml2-dev libgeoip-dev lmdb-dev yajl-dev curl-dev pkgconf libxslt-dev libgd-dev nginx automake libmodsecurity
-
+apk add --no-cache git jq curl libtool autoconf build-base pcre-dev zlib-dev openssl-dev libxml2-dev geoip-dev lmdb-dev yajl-dev curl-dev pkgconf libxslt-dev gd-dev automake
 
 rm -rf $cur_dir/src
+mkdir -p $cur_dir/modsec-build/
 mkdir -p $cur_dir/src
 # Prepare ModSecurity repo
 cd $cur_dir/src
@@ -34,11 +32,11 @@ $sudo make install
 $sudo rm -rf $cur_dir/src/cpg
 $sudo mkdir $cur_dir/src/cpg
 cd $cur_dir/src/cpg
-nginx_ver=$1
+nginx_ver=$(nginx -v 2>&1 | awk '{print $3}' | awk -F / '{print $2}')
 $sudo curl -sSLO "http://nginx.org/download/nginx-${nginx_ver}.tar.gz"
 $sudo tar -xvzf nginx-${nginx_ver}.tar.gz
 $sudo git clone https://github.com/SpiderLabs/ModSecurity-nginx $cur_dir/src/cpg/ModSecurity-nginx
 cd nginx-${nginx_ver}
 $sudo sh configure --with-compat --with-openssl=/usr/include/openssl/ --add-dynamic-module=$cur_dir/src/cpg/ModSecurity-nginx
 $sudo make modules
-$sudo cp objs/ngx_http_modsecurity_module.so $cur_dir/modsec-build/
+$sudo cp $cur_dir/src/cpg/nginx-${nginx_ver}/objs/ngx_http_modsecurity_module.so $cur_dir/modsec-build/
