@@ -2,6 +2,8 @@
 
 # Sourced from https://www.webhi.com/how-to/how-to-install-modsecurity-in-nginx-on-ubuntu-18-04-20-4-22-04-debian/
 
+set -e
+
 if whoami | grep -qv root
 then
 
