@@ -39,7 +39,7 @@ $sudo rm -rf $cur_dir/src
 $sudo mkdir -p $cur_dir/modsec-build/ $cur_dir/src /opt/modsecurity
 # Prepare ModSecurity repo
 cd $cur_dir/src
-$sudo git clone -b v3/encodejsaudit --single-branch https://github.com/airween/ModSecurity.git
+$sudo git clone --depth 1 -b v3/master --single-branch https://github.com/owasp-modsecurity/ModSecurity
 cd $cur_dir/src/ModSecurity
 $sudo git submodule init
 $sudo git submodule update
