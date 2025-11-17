@@ -36,35 +36,33 @@ fi
 
 # Prepare ModSecurity repo
 $sudo rm -rf $cur_dir/src
-$sudo mkdir -p $cur_dir/modsec-build/ $cur_dir/src /opt/modsecurity
-# Prepare ModSecurity repo
-cd $cur_dir/src
-$sudo git clone --depth 1 -b v3/master --single-branch https://github.com/owasp-modsecurity/ModSecurity
-cd $cur_dir/src/ModSecurity
+$sudo mkdir -p /opt/modsecurity/ /usr/lib/nginx/modules/
+cd /usr/local/src
+$sudo git clone --depth 1 -b v3/master --single-branch https://github.com/SpiderLabs/ModSecurity
+cd ModSecurity
 $sudo git submodule init
 $sudo git submodule update
 $sudo bash build.sh
-$sudo sh configure
+$sudo ./configure
 $sudo make
 $sudo make install
 
 # Prepare nginx module
-$sudo rm -rf $cur_dir/src/cpg
-$sudo mkdir $cur_dir/src/cpg
-cd $cur_dir/src/cpg
+$sudo mkdir /usr/local/src/cpg
+cd /usr/local/src/cpg
 nginx_ver=$(nginx -v 2>&1 | awk '{print $3}' | awk -F / '{print $2}')
 $sudo curl -sSLO "http://nginx.org/download/nginx-${nginx_ver}.tar.gz"
 $sudo tar -xvzf nginx-${nginx_ver}.tar.gz
-$sudo git clone https://github.com/SpiderLabs/ModSecurity-nginx $cur_dir/src/cpg/ModSecurity-nginx
-cd $cur_dir/src/cpg/nginx-${nginx_ver}
-$sudo sh configure --with-compat --with-openssl=/usr/include/openssl/ --add-dynamic-module=$cur_dir/src/cpg/ModSecurity-nginx
+$sudo git clone https://github.com/SpiderLabs/ModSecurity-nginx
+cd nginx-${nginx_ver}
+$sudo ./configure --with-compat --with-openssl=/usr/include/openssl/ --add-dynamic-module=/usr/local/src/cpg/ModSecurity-nginx
 $sudo make modules
-$sudo cp $cur_dir/src/cpg/nginx-${nginx_ver}/objs/ngx_http_modsecurity_module.so /usr/share/nginx/modules/
+$sudo cp objs/ngx_http_modsecurity_module.so /usr/share/nginx/modules/
 
 # Configure ModSecurity
 cd /opt/modsecurity
-$sudo cp $cur_dir/src/ModSecurity/unicode.mapping ./
-$sudo rm -rf $cur_dir/src
+$sudo cp /usr/local/src/ModSecurity/unicode.mapping ./
+$sudo rm -rf /usr/local/src/cpg /usr/local/src/ModSecurity
 crs_ver=$(curl -sSL https://api.github.com/repos/coreruleset/coreruleset/releases/latest | jq -r .tag_name)
 $sudo rm -rf crs
 $sudo git clone -b $crs_ver https://github.com/coreruleset/coreruleset.git crs
